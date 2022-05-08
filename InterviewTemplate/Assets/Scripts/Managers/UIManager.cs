@@ -59,9 +59,9 @@ namespace VideoPoker
 
 		}
 
-		public void DisplayPoints(int points) {
+		public void DisplayPoints(string intro, int points) {
 			if(points > 0) {
-				winningText.text = "Jacks or Better! You won " + points.ToString() + " credits!";
+				winningText.text = intro + "! You won " + points.ToString() + " credits!";
 				totalPoints += points;
 				currentBalanceText.text = "Balance: " + totalPoints + " Credits";
 			} else {

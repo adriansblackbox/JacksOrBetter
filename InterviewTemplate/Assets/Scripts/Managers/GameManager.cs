@@ -49,13 +49,13 @@ namespace VideoPoker
 			CardButtons(true);
 			hand.Clear();
 			int suit = Random.Range(0,4);
-			int rank = Random.Range(0,13);
+			int rank = Random.Range(1,14);
 			Card curCard = new Card(suit, rank);
 			hand.Add(curCard);
 			Cards[0].GetComponent<CardScript>().ChangeSprite(suit, rank);
 			for(int i = 1; i < 5; ++i) {
 				curCard.Suit = Random.Range(0,4);
-				curCard.Rank = Random.Range(0,13);
+				curCard.Rank = Random.Range(1,14);
 				if(!CheckCards(curCard, i)) {
 					hand.Add(curCard);
 					Cards[i].GetComponent<CardScript>().ChangeSprite(curCard.Suit, curCard.Rank);
@@ -68,16 +68,15 @@ namespace VideoPoker
 		// delt their first hand
 		public void DealCards() {
 			CardButtons(false);
-			Card curCard = new Card(0, 0);
 			for(int i = 0; i < 5; ++i) {
 				if(Cards[i].GetComponent<CardScript>().hold) {
 					continue;
 				}
-				curCard.Suit = Random.Range(0,4);
-				curCard.Rank = Random.Range(0,13);
+				int suit = Random.Range(0,4);
+				int rank = Random.Range(1,14);
+				Card curCard = new Card(suit, rank);
 				if(!CheckCards(curCard, i)) {
-					hand.RemoveAt(i);
-					hand.Add(curCard);
+					hand[i] = curCard;
 					Cards[i].GetComponent<CardScript>().ChangeSprite(curCard.Suit, curCard.Rank);
 				}else {
 					i--;
@@ -87,27 +86,97 @@ namespace VideoPoker
 		}
 		private void CalculatePoints() {
 			int points = 0;
-			if(CheckFlush(hand))
+			string intro = "";
+			if(JacksOrBetter(hand)) {
+				points = 1;
+				intro = "Jacks Or Better";
+			}
+			if(CheckThree(hand)) {
+				points = 3;
+				intro = "Three Of A Kind";
+			}
+			if(CheckTwoPair(hand)) {
+				points = 2;
+				intro = "Two Pairs";
+			}
+			if(CheckStraight(hand)) {
+				points = 4;
+				intro = "Straight";
+			}
+			if(CheckFlush(hand)) {
 				points = 6;
-			if(CheckStraightFlush(hand))
+				intro = "";
+			}
+			if(CheckFullHouse(hand)) {
+				points = 9;
+				intro = "Full House";
+			}
+			if(CheckFour(hand)) {
+				points = 25;
+				intro = "Four Of A Kind";
+			}
+			if(CheckStraightFlush(hand)) {
 				points = 50;
-			UIManager.DisplayPoints(points);
+				intro = "Straight Flush";
+			}
+			if(CheckRoyalFlush(hand)) {
+				points = 800;
+				intro = "ROYAL FLUSH";
+			}
+			UIManager.DisplayPoints(intro, points);
 		}
 		///////////////////////////////////////////////////////////////////////////////////
 		// Helper functions for calculating score
-		private bool CheckTwoPair(List<Card> cards) {
-
+		private bool JacksOrBetter(List<Card> cards) {
+			List<int> cardRanks = new List<int>();
+			foreach (Card card in cards) {
+				cardRanks.Add(card.Rank);
+			}
+			IEnumerable<int> duplicates = cardRanks.GroupBy(x => x).Where(g => g.Count() > 1).Select(x => x.Key);
+			if(duplicates.Count() == 1 && (duplicates.ElementAt(0) >= 10))
+				return true;
+				
 			return false;
 		}
+		private bool CheckTwoPair(List<Card> cards) {
+			List<int> cardRanks = new List<int>();
+			foreach (Card card in cards) {
+				cardRanks.Add(card.Rank);
+			}
+			IEnumerable<int> duplicates = cardRanks.GroupBy(x => x).Where(g => g.Count() > 1).Select(x => x.Key);
+			if(duplicates.Count() != 2)
+				return false;
+
+			return true;
+		}
 		private bool CheckThree(List<Card> cards) {
+			List<int> cardRanks = new List<int>();
+			foreach (Card card in cards) {
+				cardRanks.Add(card.Rank);
+			}
+			Debug.Log(cardRanks.Distinct().Count());
+			if(cardRanks.Distinct().Count() == 3)
+				return true;
+			
 			return false;
 		}
 		private bool CheckFour(List<Card> cards) {
-			return false;
+			List<int> cardRanks = new List<int>();
+			foreach (Card card in cards) {
+				cardRanks.Add(card.Rank);
+			}
+			if(cardRanks.Distinct().Count() == 2)
+				return true;
+			else
+				return false;
 		}
 		
 		private bool CheckStraight(List<Card> cards) {
-			return false;
+				for(int i = 1; i < cards.Count; i++) {
+					if(cards[i].Rank != cards[i-1].Rank-1)
+						return false;
+				}
+			return true;
 		}
 		private bool CheckFlush(List<Card> cards) {
 			int firstsuit = cards[0].Suit;
@@ -120,24 +189,29 @@ namespace VideoPoker
 		private bool CheckStraightFlush(List<Card> cards) {
 			if(!CheckFlush(cards))
 				return false;
-			if(cards[0].Rank == cards[1].Rank+1) {
-				for(int i = 1; i < cards.Count; i++) {
-					if(cards[i].Rank != cards[i-1].Rank-1)
-						return false;
-				}
-			}else {
-				for(int i = 1; i < cards.Count; i++) {
-					if(cards[i].Rank != cards[i-1].Rank+1)
-						return false;
-				}
-			}
+			if(!CheckStraight(cards))
+				return false;
 			return true;
 		}
 		private bool CheckFullHouse(List<Card> cards) {
-			return false;
+			List<int> cardRanks = new List<int>();
+			foreach (Card card in cards) {
+				cardRanks.Add(card.Rank);
+			}
+			if(cardRanks.Distinct().Count() != 5)
+				return false;
+			if(!CheckThree(cards))
+				return false;
+			return true;
 		}
 		private bool CheckRoyalFlush(List<Card> cards) {
-			return false;
+			if(!CheckFlush(cards))
+				return false;
+			foreach (Card card in cards) {
+				if(card.Rank <= 10)
+					return false;
+			}
+			return true;
 		}
 		///////////////////////////////////////////////////////////////////////////////////
 
