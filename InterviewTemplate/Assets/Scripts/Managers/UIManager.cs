@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace VideoPoker
@@ -17,6 +19,8 @@ namespace VideoPoker
 
 		[SerializeField]
 		private Button betButton = null;
+		public bool gameReset;
+		private GameManager gm;
 
 		//-//////////////////////////////////////////////////////////////////////
 		/// 
@@ -29,6 +33,8 @@ namespace VideoPoker
 		void Start()
 		{
 			betButton.onClick.AddListener(OnBetButtonPressed);
+			gm = FindObjectOfType<GameManager>();
+			gameReset = true;
 		}
 
 		//-//////////////////////////////////////////////////////////////////////
@@ -37,6 +43,15 @@ namespace VideoPoker
 		/// 
 		private void OnBetButtonPressed()
 		{
+			if(gameReset) {
+				gm.StartGame();
+				gameReset = false;
+			}
+			else {
+				gm.DealCards();
+				gameReset = true;
+			}
+
 		}
 	}
 }
