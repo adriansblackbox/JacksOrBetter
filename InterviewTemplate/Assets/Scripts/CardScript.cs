@@ -33,6 +33,7 @@ public class CardScript : MonoBehaviour
     public void ResetCard() {
         hold = false;
         HoldUI.SetActive(hold);
+        ChangeSprite(0,0);
     }
 }
 

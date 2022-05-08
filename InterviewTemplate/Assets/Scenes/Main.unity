@@ -166,11 +166,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c0aa5c8650949fb9e5364fa26bcddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Card_1: {fileID: 518434826}
-  Card_2: {fileID: 1424484294}
-  Card_3: {fileID: 690576246}
-  Card_4: {fileID: 975979648}
-  Card_5: {fileID: 2137889455}
+  Cards:
+  - {fileID: 518434826}
+  - {fileID: 1424484294}
+  - {fileID: 690576246}
+  - {fileID: 975979648}
+  - {fileID: 2137889455}
 --- !u!1 &47225193
 GameObject:
   m_ObjectHideFlags: 0
