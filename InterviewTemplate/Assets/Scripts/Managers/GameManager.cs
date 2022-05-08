@@ -32,6 +32,7 @@ namespace VideoPoker
 		void Update()
 		{
 		}
+		// StartGame() get's called both at the start of the game, and when the player 
 		public void StartGame() {
 			ResetCards();
 			CardButtons(true);
@@ -54,12 +55,11 @@ namespace VideoPoker
 				}
 			}
 		}
+		// DealCards() is called if the player presses the button after they've been
+		// delt their first hand
 		public void DealCards() {
 			CardButtons(false);
-			//iterate over the hand, and check if it's held or not
-			//if it is, leave it alone.
-			//if not, remove the array index from both the suite and value lists
-			for(int i = 1; i < 5; ++i) {
+			for(int i = 0; i < 5; ++i) {
 				if(Cards[0].GetComponent<CardScript>().hold) {
 					continue;
 				}
@@ -74,11 +74,13 @@ namespace VideoPoker
 				}
 			}
 		}
+		// Resets the cards to their default image & removes hold
 		private void ResetCards() {
 			for(int i = 0; i < Cards.Length; i++) {
 				Cards[i].GetComponent<CardScript>().ResetCard();
 			}
 		}
+		// Turns the card buttons off if the boolean passed is false, and vice versa
 		private void CardButtons(bool enabled) {
 			for(int i = 0; i < Cards.Length; i++) {
 				Cards[i].GetComponent<Button>().enabled = enabled;

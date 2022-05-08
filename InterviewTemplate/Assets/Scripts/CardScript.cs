@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using VideoPoker;
 
 
@@ -9,6 +10,7 @@ public class CardScript : MonoBehaviour
     // Start is called before the first frame update
     public bool hold;
     public GameObject HoldUI;
+    public UnityEngine.UI.Image CardImage;
     private UIManager UIManager;
     void Start()
     {
@@ -25,9 +27,12 @@ public class CardScript : MonoBehaviour
             HoldUI.SetActive(hold);
         }
     }
-    public void ChangeSprite(int suit, int num) {
+    public void ChangeSprite(int suit, int value) {
         if(!hold) {
-            Debug.Log("My suit = " + suit + " My value = " + num);
+            string suitString = suit.ToString();
+            string valueString = value.ToString();
+            Debug.Log("Art/Cards/" + suitString + valueString);
+            CardImage.sprite = Resources.Load<Sprite>("Art/Cards/" + suitString + valueString);
         }
     }
     public void ResetCard() {

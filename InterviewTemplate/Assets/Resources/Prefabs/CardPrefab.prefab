@@ -118,6 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hold: 0
   HoldUI: {fileID: 4677759297069796229}
+  CardImage: {fileID: 4677759297067671056}
 --- !u!1 &4677759297067671058
 GameObject:
   m_ObjectHideFlags: 0
