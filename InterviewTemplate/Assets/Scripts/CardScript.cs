@@ -27,12 +27,11 @@ public class CardScript : MonoBehaviour
             HoldUI.SetActive(hold);
         }
     }
-    public void ChangeSprite(int suit, int value) {
+    public void ChangeSprite(int suit, int rank) {
         if(!hold) {
             string suitString = suit.ToString();
-            string valueString = value.ToString();
-            Debug.Log("Art/Cards/" + suitString + valueString);
-            CardImage.sprite = Resources.Load<Sprite>("Art/Cards/" + suitString + valueString);
+            string rankString = rank.ToString();
+            CardImage.sprite = Resources.Load<Sprite>("Art/Cards/" + suitString + rankString);
         }
     }
     public void ResetCard() {

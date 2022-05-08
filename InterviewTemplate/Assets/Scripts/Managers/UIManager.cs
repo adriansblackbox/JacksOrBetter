@@ -21,6 +21,7 @@ namespace VideoPoker
 		private Button betButton = null;
 		public bool gameReset;
 		private GameManager gm;
+		public float points, totalPoints;
 
 		//-//////////////////////////////////////////////////////////////////////
 		/// 
@@ -35,6 +36,8 @@ namespace VideoPoker
 			betButton.onClick.AddListener(OnBetButtonPressed);
 			gm = FindObjectOfType<GameManager>();
 			gameReset = true;
+			winningText.enabled = false;
+			points = totalPoints = 0;
 		}
 
 		//-//////////////////////////////////////////////////////////////////////
@@ -44,14 +47,26 @@ namespace VideoPoker
 		private void OnBetButtonPressed()
 		{
 			if(gameReset) {
+				winningText.enabled = false;
 				gm.StartGame();
 				gameReset = false;
 			}
 			else {
+				winningText.enabled = true;
 				gm.DealCards();
 				gameReset = true;
 			}
 
+		}
+
+		public void DisplayPoints(int points) {
+			if(points > 0) {
+				winningText.text = "Jacks or Better! You won " + points.ToString() + " credits!";
+				totalPoints += points;
+				currentBalanceText.text = "Balance: " + totalPoints + " Credits";
+			} else {
+				winningText.text = "Game Over!";
+			}
 		}
 	}
 }
