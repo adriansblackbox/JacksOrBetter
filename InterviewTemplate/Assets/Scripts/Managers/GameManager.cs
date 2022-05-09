@@ -43,7 +43,16 @@ namespace VideoPoker
 		void Update()
 		{
 		}
-		// StartGame() get's called both at the start of the game, and when the player 
+		/* NOTES:
+		*	Cards are assigned to their sprite through numerical values of their suit and rank
+		*	Clubs = 0
+		*	Diamonds = 1
+		* 	Hearts = 2
+		*	Spaids = 3
+		*	Ace = 13, Rank 2 = 1
+		*/
+		// StartGame() get's called both at the start of the game, and when the player
+		// restarts the game
 		public void StartGame() {
 			ResetCards();
 			CardButtons(true);
@@ -84,6 +93,9 @@ namespace VideoPoker
 			}
 			CalculatePoints();
 		}
+
+		// Through the use of the helper functions below, Calculate points
+		// determins both the points and message needed to be given
 		private void CalculatePoints() {
 			int points = 0;
 			string intro = "";

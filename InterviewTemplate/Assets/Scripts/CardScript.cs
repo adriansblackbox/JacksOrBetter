@@ -27,6 +27,8 @@ public class CardScript : MonoBehaviour
             HoldUI.SetActive(hold);
         }
     }
+    // Depending on the suit and rank given, the card will search for the
+    // corresponding sprite name in the resource folder.
     public void ChangeSprite(int suit, int rank) {
         if(!hold) {
             string suitString = suit.ToString();
@@ -34,10 +36,11 @@ public class CardScript : MonoBehaviour
             CardImage.sprite = Resources.Load<Sprite>("Art/Cards/" + suitString + rankString);
         }
     }
+    // resets cards to Ace of Clubs
     public void ResetCard() {
         hold = false;
         HoldUI.SetActive(hold);
-        ChangeSprite(0,0);
+        ChangeSprite(0,13);
     }
 }
 

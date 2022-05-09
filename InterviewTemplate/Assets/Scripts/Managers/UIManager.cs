@@ -46,6 +46,8 @@ namespace VideoPoker
 		/// 
 		private void OnBetButtonPressed()
 		{
+			// The game has two states: when the player's hand needs to
+			// be reset, and when the player's cards get re-dealt
 			if(gameReset) {
 				winningText.enabled = false;
 				gm.StartGame();
@@ -58,7 +60,8 @@ namespace VideoPoker
 			}
 
 		}
-
+		// This function updates the UI depedning on point calculation through
+		// the game manager
 		public void DisplayPoints(string intro, int points) {
 			if(points > 0) {
 				winningText.text = intro + "! You won " + points.ToString() + " credits!";
