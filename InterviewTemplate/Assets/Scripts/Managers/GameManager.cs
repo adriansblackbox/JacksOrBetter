@@ -105,7 +105,7 @@ namespace VideoPoker
 			}
 			if(CheckFlush(hand)) {
 				points = 6;
-				intro = "";
+				intro = "Flush";
 			}
 			if(CheckFullHouse(hand)) {
 				points = 9;
