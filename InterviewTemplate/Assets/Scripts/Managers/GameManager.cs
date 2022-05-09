@@ -144,6 +144,7 @@ namespace VideoPoker
 			foreach (Card card in cards) {
 				cardRanks.Add(card.Rank);
 			}
+			// creats an int IEnumerable array containing any element that has a duplicate
 			IEnumerable<int> duplicates = cardRanks.GroupBy(x => x).Where(g => g.Count() > 1).Select(x => x.Key);
 			if(duplicates.Count() == 1 && (duplicates.ElementAt(0) >= 10))
 				return true;
