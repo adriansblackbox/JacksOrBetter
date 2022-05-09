@@ -107,13 +107,13 @@ namespace VideoPoker
 				points = 6;
 				intro = "Flush";
 			}
-			if(CheckFullHouse(hand)) {
-				points = 9;
-				intro = "Full House";
-			}
 			if(CheckFour(hand)) {
 				points = 25;
 				intro = "Four Of A Kind";
+			}
+			if(CheckFullHouse(hand)) {
+				points = 9;
+				intro = "Full House";
 			}
 			if(CheckStraightFlush(hand)) {
 				points = 50;
@@ -198,17 +198,18 @@ namespace VideoPoker
 			foreach (Card card in cards) {
 				cardRanks.Add(card.Rank);
 			}
-			if(cardRanks.Distinct().Count() != 5)
+			if(cardRanks.Distinct().Count() != 2)
 				return false;
-			if(!CheckThree(cards))
-				return false;
+			IEnumerable<int> duplicates = cardRanks.GroupBy(x => x).Where(g => g.Count() > 1).Select(x => x.Key);
+			if(duplicates.Count() != 2)
+				return false;	
 			return true;
 		}
 		private bool CheckRoyalFlush(List<Card> cards) {
 			if(!CheckFlush(cards))
 				return false;
 			foreach (Card card in cards) {
-				if(card.Rank <= 10)
+				if(card.Rank < 9)
 					return false;
 			}
 			return true;
